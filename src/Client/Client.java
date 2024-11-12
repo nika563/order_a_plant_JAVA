@@ -13,23 +13,19 @@ public class Client extends Human {
     private String address;
     private int idOrder;
 
-
     public Client(String nameHuman, int phoneHumber, String address) {
         super(nameHuman, phoneHumber);
         this.address = address;
     }
-
     public Client() {
         super("", 01);
     }
-
     public void setNameHuman() {
         Scanner in = new Scanner(System.in);
         System.out.print("Enter full name: ");
         nameHuman = in.nextLine();
         in.close();
     }
-
     public void setPhoneHumber() {
         try {
             Scanner in = new Scanner(System.in);
@@ -40,37 +36,30 @@ public class Client extends Human {
             System.out.println("Please try again");
         }
     }
-
     public void setAddress() {
         Scanner in = new Scanner(System.in);
         System.out.print("Enter address: ");
         address = in.nextLine();
         in.close();
     }
-
     public void setIdOrder() {
         Random random = new Random();
         idOrder = random.nextInt();
         System.out.println("ID: " + idOrder);
     }
-
     //get
     public String getCompanyName() {
         return nameHuman;
     }
-
     public int getPhoneHumber(int phoneHumber) {
         return this.phoneHumber = phoneHumber;
     }
-
     public String getAddress() {
         return address;
     }
-
     public int getIdOrder() {
         return idOrder;
     }
-
     //see
     public void getAll() {
         System.out.println("\nName: " + nameHuman + "\nPhone number: " + phoneHumber + "\nAdress: " + address +

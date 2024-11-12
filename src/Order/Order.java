@@ -1,6 +1,5 @@
 package Order;
 
-
 import AllData.AllData;
 
 import java.io.*;
@@ -17,204 +16,13 @@ public class Order {
     String linkPlantFileUpdated = "src/File/plantFileUpdate.txt";
     String linkClientFileUpdated = "src/File/clientFileUpdate.txt";
     String linkOrder = "src/File/order.txt";
-
     //create file
     File serviceFile = new File(linkService);
     File fileAllDataOrder = new File(linkAllDataOrder);
     File plantFileUpdated = new File(linkPlantFileUpdated);
     File clientFileUpdated = new File(linkClientFileUpdated);
     File orderFile = new File(linkOrder);
-
-
-    //type = 1, cost = 2, size = 3, plant = 4, time = 5
-
-    //service
-    public void addTypeService() throws IOException {
-        //list
-        List<String> listAddService = new ArrayList<String>();
-        BufferedReader readServiceFile = new BufferedReader(new FileReader(serviceFile));
-        String answerReadServiceFile;
-        if (readServiceFile.readLine() != null) {
-            while ((answerReadServiceFile = readServiceFile.readLine()) != null) {
-                listAddService.add(answerReadServiceFile);
-            }
-        }
-        //scanner
-        Scanner in = new Scanner(System.in);
-        System.out.print("Do you want to add a new service? Enter YES or NO: ");
-        String answerService = in.nextLine().toLowerCase();
-        //main code
-        while (true) {
-            if (answerService.equals("yes") && serviceFile.exists()) {
-                while (true) {
-                    System.out.print("Please enter name new service: ");
-                    String newService = in.nextLine().toLowerCase();
-                    if (newService.equals("no")) {
-                        System.out.println("Ok, system do not add service\n");
-                        BufferedWriter fileWriterService = new BufferedWriter(new FileWriter(serviceFile));
-                        BufferedWriter fileWriterAllData = new BufferedWriter(new FileWriter(fileAllDataOrder, true));
-                        //read
-                        BufferedReader fileReadAllData = new BufferedReader(new FileReader(fileAllDataOrder));
-                        BufferedReader fileReadService = new BufferedReader(new FileReader(serviceFile));
-                        // if - else
-                        if (fileReadService.readLine() != null && fileReadAllData.readLine() == null) {
-                            BufferedReader readService = new BufferedReader(new FileReader(serviceFile));
-                            String lineAddDataFile;
-                            while ((lineAddDataFile = readService.readLine()) != null) {
-                                fileWriterAllData.write(lineAddDataFile + "\n");
-                            }
-                            readService.close();
-                        } else if (fileReadService.readLine() == null && fileReadAllData.readLine() != null) {
-                            BufferedReader readAllData = new BufferedReader(new FileReader(fileAllDataOrder));
-                            String lineAddDataFile;
-                            while ((lineAddDataFile = readAllData.readLine()) != null) {
-                                fileWriterService.write(lineAddDataFile + "\n");
-                            }
-                            readAllData.close();
-                        } else if (fileReadService.readLine() == null && fileReadAllData.readLine() == null) {
-                            for (String lineServiceAddFile : listAddService) {
-                                fileWriterService.write(lineServiceAddFile + "\n");
-                                fileWriterAllData.write(lineServiceAddFile + "\n");
-                            }
-                        }
-                        listAddService.clear();
-                        fileWriterService.close();
-                        fileWriterAllData.close();
-                        fileReadService.close();
-                        fileReadAllData.close();
-                        break;
-                    } else {
-                        if (listAddService.contains(newService)) {
-                            System.out.println("This name is in the file");
-                        } else {
-                            System.out.println("Service successful add");
-                            listAddService.add(newService);
-                        }
-                    }
-                }
-                break;
-            } else if (answerService.equals("no") && serviceFile.exists()) {
-                System.out.println("Ok, system do not add service\n");
-                BufferedWriter fileWriterService = new BufferedWriter(new FileWriter(serviceFile));
-                BufferedWriter fileWriterAllData = new BufferedWriter(new FileWriter(fileAllDataOrder, true));
-                //read
-                BufferedReader fileReadAllData = new BufferedReader(new FileReader(fileAllDataOrder));
-                BufferedReader fileReadService = new BufferedReader(new FileReader(serviceFile));
-                //if - else
-                if (fileReadService.readLine() != null && fileReadAllData.readLine() == null) {
-                    BufferedReader readService = new BufferedReader(new FileReader(serviceFile));
-                    String lineAddDataFile;
-                    while ((lineAddDataFile = readService.readLine()) != null) {
-                        fileWriterAllData.write(lineAddDataFile + "\n");
-                    }
-                    readService.close();
-                } else if (fileReadService.readLine() == null && fileReadAllData.readLine() != null) {
-                    BufferedReader readAllData = new BufferedReader(new FileReader(fileAllDataOrder));
-                    String lineAddData;
-                    while ((lineAddData = readAllData.readLine()) != null) {
-                        fileWriterService.write(lineAddData + "\n");
-                        System.out.println(lineAddData);
-                    }
-                    readAllData.close();
-                } else if (fileReadService.readLine() == null && fileReadAllData.readLine() == null) {
-                    for (String lineServiceAddFile : listAddService) {
-                        fileWriterService.write(lineServiceAddFile + "\n");
-                        fileWriterAllData.write(lineServiceAddFile + "\n");
-                    }
-                }
-
-                listAddService.clear();
-                fileWriterService.close();
-                fileWriterAllData.close();
-                fileReadService.close();
-                fileReadAllData.close();
-                break;
-            } else {
-                System.out.println("Create file serviceFile");
-                serviceFile.createNewFile();
-            }
-        }
-        readServiceFile.close();
-        listAddService.clear();
-        allData.menu();
-    }
-    public void removeTypeService() throws IOException {
-        List<String> listRemoveService = new ArrayList<String>();
-        List<String> listRemoveServiceYet = new ArrayList<String>();
-        // read file
-        BufferedReader readFileService = new BufferedReader(new FileReader(serviceFile));
-        String line;
-        //add data in list
-        if (readFileService.readLine() != null) {
-            while ((line = readFileService.readLine()) != null) {
-                listRemoveService.add(line);
-            }
-            readFileService.close();
-        } else if (readFileService.readLine() == null) {
-            System.out.println("You can not delete type of service because in file not service\n");
-            readFileService.close();
-            allData.menu();
-        }
-
-
-        // remove listYеtServicePlants
-        while (true) {
-            Scanner in = new Scanner(System.in);
-            System.out.print("Do you want to remove a type of service? Enter YES or NO: ");
-            String answerPlant = in.nextLine().toLowerCase();
-
-
-            if (answerPlant.equals("yes")) {
-                //see list
-                int number = 1;
-                System.out.println("----------------List type of service----------------");
-                BufferedReader readSeeServicePlants = new BufferedReader(new FileReader(linkService));
-                while ((line = readSeeServicePlants.readLine()) != null) {
-                    System.out.printf("%d) %s \n", number, line);
-                    number++;
-                }
-                readSeeServicePlants.close();
-
-                //while
-                while (true) {
-                    System.out.print("Enter name type of service whith you want delete: ");
-                    String answerService = in.nextLine().toLowerCase();
-                    if (answerService.equals("no")) {
-                        System.out.println("Ok, no problem system do not remove type of service\n");
-                        BufferedWriter writeFileService = new BufferedWriter(new FileWriter(serviceFile));
-
-                        for (String lines : listRemoveService) {
-                            writeFileService.write(lines + "\n");
-                        }
-                        writeFileService.close();
-                        break;
-                    } else {
-                        if (listRemoveService.contains(answerService)) {
-                            listRemoveService.remove(answerService);
-                            listRemoveServiceYet.add(answerService);
-                            System.out.println("System successfully remove this type of service");
-                        } else if (!listRemoveService.contains(answerService) && listRemoveServiceYet.contains(answerService)) {
-                            System.out.println("This type of service is already remove");
-                        } else if (!listRemoveService.contains(answerService) && !listRemoveServiceYet.contains(answerService)) {
-                            System.out.println("You can not remove this type of service because it is not exist (in list)");
-                        }
-                    }
-                }
-                break;
-            } else if (!answerPlant.equals("yes") && !answerPlant.equals("no")) {
-                continue;
-            } else if (answerPlant.equals("no")) {
-                System.out.print("\n");
-                break;
-            } else {
-                System.out.print("\n");
-                break;
-            }
-        }
-        allData.menu();
-    }
-
-    //cost
+    //
     public void addCostService() throws IOException {
         BufferedReader readAllDataOrder = new BufferedReader(new FileReader(fileAllDataOrder));
         List<List<String>> addTypeService0 = new ArrayList<>();
@@ -587,8 +395,6 @@ public class Order {
         readAllDataOrder.close();
         allData.menu();
     }
-
-    //size
     public void addSizeService() throws IOException {
         BufferedReader readAllDataOrder = new BufferedReader(new FileReader(fileAllDataOrder));
         List<List<String>> addTypeService0 = new ArrayList<>();
@@ -1062,8 +868,6 @@ public class Order {
         allData.menu();
 
     }
-
-    //plant
     public void addPlantService() throws IOException {
         BufferedReader readAllDataOrder = new BufferedReader(new FileReader(fileAllDataOrder));
         BufferedReader readPlantOrder = new BufferedReader(new FileReader(plantFileUpdated));
@@ -1542,8 +1346,6 @@ public class Order {
         allData.menu();
 
     }
-
-    //time
     public void addTimeService() throws IOException {
         BufferedReader readAllDataOrder = new BufferedReader(new FileReader(fileAllDataOrder));
         List<List<String>> addTypeService0 = new ArrayList<>();
@@ -2048,8 +1850,6 @@ public class Order {
         allData.menu();
 
     }
-
-    //view list
     public void viewListServiceCost() throws IOException {
         BufferedReader readAllDataOrder = new BufferedReader(new FileReader(fileAllDataOrder));
         List<List<String>> addTypeService0 = new ArrayList<>();
@@ -2512,8 +2312,7 @@ public class Order {
                         fileWriterAllData.write(lineAddDataFile + "\n");
                     }
                     readService.close();
-                }
-                else if (fileReadService.readLine() == null && fileReadAllData.readLine() == null) {
+                } else if (fileReadService.readLine() == null && fileReadAllData.readLine() == null) {
                     System.out.println("You must add service");
                     break;
                 }
@@ -2535,8 +2334,7 @@ public class Order {
                             if (answerTypeService.equals("no")) {
                                 System.out.println("No problem");
                                 break;
-                            }
-                            else if (answerTypeService.equals("yes")) {
+                            } else if (answerTypeService.equals("yes")) {
                                 System.out.println("\n----------List of service----------");
                                 int count = 1;
                                 //end
@@ -2591,16 +2389,14 @@ public class Order {
                             }
                         }
                         break;
-                    }
-                    else {
+                    } else {
                         System.out.println("No problem");
                         break;
                     }
                 }
                 addListAllData.close();
                 break;
-            }
-            else if (readAllDataOrder.readLine() != null && fileAllDataOrder.exists()) {
+            } else if (readAllDataOrder.readLine() != null && fileAllDataOrder.exists()) {
                 BufferedReader readFileOrder = new BufferedReader(new FileReader(fileAllDataOrder));
                 String line;
                 //add data in list
@@ -2693,12 +2489,10 @@ public class Order {
                     }
                 }
                 break;
-            }
-            else if (!fileAllDataOrder.exists()) {
+            } else if (!fileAllDataOrder.exists()) {
                 fileAllDataOrder.createNewFile();
                 System.out.println("File successful create");
-            }
-            else {
+            } else {
                 System.out.println("You can not see average time, because did not exist no one type of service");
                 break;
             }
@@ -2707,8 +2501,6 @@ public class Order {
         allData.menu();
 
     }
-
-    //client and service
     public void addClientService() throws IOException {
         BufferedReader readAllDataOrder = new BufferedReader(new FileReader(fileAllDataOrder));
         BufferedReader readClientFile = new BufferedReader(new FileReader(clientFileUpdated));
@@ -2892,7 +2684,6 @@ public class Order {
         allData.menu();
 
     }
-
     public void viewListClientChooseService() throws IOException {
         BufferedReader readOrderFile = new BufferedReader(new FileReader(orderFile));
         List<List<String>> addServiceClient0 = new ArrayList<>();
@@ -2964,6 +2755,213 @@ public class Order {
         allData.menu();
 
     }
+    private void readFileIntoList(File filePath, List<String> list) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                list.add(line);
+            }
+        }
+    }
+    //service
+    public void addTypeService() throws IOException {
+        //list
+        List<String> listAddService = new ArrayList<String>();
+        BufferedReader readServiceFile = new BufferedReader(new FileReader(serviceFile));
+        readFileIntoList(serviceFile, listAddService);
 
+        //scanner
+        Scanner in = new Scanner(System.in);
+        System.out.print("Do you want to add a new service? Enter YES or NO: ");
+        String answerService = in.nextLine().toLowerCase();
+        //main code
+        while (true) {
+            if (answerService.equals("yes") && serviceFile.exists()) {
+                while (true) {
+                    System.out.print("Please enter name new service: ");
+                    String newService = in.nextLine().toLowerCase();
+                    if (newService.equals("no")) {
+                        System.out.println("Ok, system do not add service\n");
+                        BufferedWriter fileWriterService = new BufferedWriter(new FileWriter(serviceFile));
+                        BufferedWriter fileWriterAllData = new BufferedWriter(new FileWriter(fileAllDataOrder, true));
+                        //read
+                        BufferedReader fileReadAllData = new BufferedReader(new FileReader(fileAllDataOrder));
+                        BufferedReader fileReadService = new BufferedReader(new FileReader(serviceFile));
+                        // if - else
+                        if (fileReadService.readLine() != null && fileReadAllData.readLine() == null) {
+                            BufferedReader readService = new BufferedReader(new FileReader(serviceFile));
+                            String lineAddDataFile;
+                            while ((lineAddDataFile = readService.readLine()) != null) {
+                                fileWriterAllData.write(lineAddDataFile + "\n");
+                            }
+                            readService.close();
+                        }
+                        if (fileReadService.readLine() == null && fileReadAllData.readLine() != null) {
+                            BufferedReader readAllData = new BufferedReader(new FileReader(fileAllDataOrder));
+                            String lineAddDataFile;
+                            while ((lineAddDataFile = readAllData.readLine()) != null) {
+                                fileWriterService.write(lineAddDataFile + "\n");
+                            }
+                            readAllData.close();
+                        }
+                        if (fileReadService.readLine() == null && fileReadAllData.readLine() == null) {
+                            for (String lineServiceAddFile : listAddService) {
+                                fileWriterService.write(lineServiceAddFile + "\n");
+                                fileWriterAllData.write(lineServiceAddFile + "\n");
+                            }
+                        }
+                        listAddService.clear();
+                        fileWriterService.close();
+                        fileWriterAllData.close();
+                        fileReadService.close();
+                        fileReadAllData.close();
+                        break;
+                    } else {
+                        if (listAddService.contains(newService)) {
+                            System.out.println("This name is in the file");
+                        } else {
+                            System.out.println("Service successful add");
+                            listAddService.add(newService);
+                        }
+                    }
+                }
+                break;
+            } else if (answerService.equals("no") && serviceFile.exists()) {
+                System.out.println("Ok, system do not add service\n");
+                BufferedWriter fileWriterService = new BufferedWriter(new FileWriter(serviceFile));
+                BufferedWriter fileWriterAllData = new BufferedWriter(new FileWriter(fileAllDataOrder, true));
+                //read
+                BufferedReader fileReadAllData = new BufferedReader(new FileReader(fileAllDataOrder));
+                BufferedReader fileReadService = new BufferedReader(new FileReader(serviceFile));
+                //if - else
+                if (fileReadService.readLine() != null && fileReadAllData.readLine() == null) {
+                    BufferedReader readService = new BufferedReader(new FileReader(serviceFile));
+                    String lineAddDataFile;
+                    while ((lineAddDataFile = readService.readLine()) != null) {
+                        fileWriterAllData.write(lineAddDataFile + "\n");
+                    }
+                    readService.close();
+                } else if (fileReadService.readLine() == null && fileReadAllData.readLine() != null) {
+                    BufferedReader readAllData = new BufferedReader(new FileReader(fileAllDataOrder));
+                    String lineAddData;
+                    while ((lineAddData = readAllData.readLine()) != null) {
+                        fileWriterService.write(lineAddData + "\n");
+                        System.out.println(lineAddData);
+                    }
+                    readAllData.close();
+                } else if (fileReadService.readLine() == null && fileReadAllData.readLine() == null) {
+                    for (String lineServiceAddFile : listAddService) {
+                        fileWriterService.write(lineServiceAddFile + "\n");
+                        fileWriterAllData.write(lineServiceAddFile + "\n");
+                    }
+                }
+
+                listAddService.clear();
+                fileWriterService.close();
+                fileWriterAllData.close();
+                fileReadService.close();
+                fileReadAllData.close();
+                break;
+            } else {
+                System.out.println("Create file serviceFile");
+                serviceFile.createNewFile();
+            }
+        }
+        readServiceFile.close();
+        listAddService.clear();
+        allData.menu();
+    }
+    public void removeTypeService() throws IOException {
+        List<String> services = loadServices();
+        if (services.isEmpty()) {
+            System.out.println("You cannot delete a type of service because there are no services in the file.");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.print("Do you want to remove a type of service? Enter YES or NO: ");
+            if (!scanner.hasNextLine()) {
+                System.out.println("No input provided.");
+                break;
+            }
+            String answer = scanner.nextLine().trim().toLowerCase();
+
+            if ("yes".equals(answer)) {
+                displayServices();
+                handleServiceRemoval(services, scanner);
+                saveServices(services);
+                break;
+            }
+            else if ("no".equals(answer)) {
+                System.out.println("No changes made.");
+                break;
+            }
+        }
+        allData.menu();
+    }
+    protected List<String> loadServices() throws IOException {
+        List<String> services = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(serviceFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                services.add(line);
+            }
+        }
+        return services;
+    }
+    protected void displayServices() throws IOException {
+        System.out.println("----------------List of Services----------------");
+        try (BufferedReader reader = new BufferedReader(new FileReader(linkService))) {
+            String line;
+            int index = 1;
+            while ((line = reader.readLine()) != null) {
+                System.out.printf("%d) %s%n", index++, line);
+            }
+        }
+    }
+    protected void handleServiceRemoval(List<String> services, Scanner scanner) {
+        List<String> removedServices = new ArrayList<>();
+        while (true) {
+            System.out.print("Enter the name of the service you want to delete (or type 'no' to cancel): ");
+            if (!scanner.hasNextLine()) {
+                System.out.println("No input provided.");
+                break;
+            }
+            String serviceToRemove = scanner.nextLine().trim().toLowerCase();
+
+            if ("no".equals(serviceToRemove)) {
+                System.out.println("Operation cancelled.");
+                break;
+            } else if (services.remove(serviceToRemove)) {
+                removedServices.add(serviceToRemove);
+                System.out.println("Service removed successfully.");
+            } else if (removedServices.contains(serviceToRemove)) {
+                System.out.println("This service has already been removed.");
+            } else {
+                System.out.println("Service not found.");
+            }
+        }
+    }
+    private void saveServices(List<String> services) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(serviceFile))) {
+            for (String service : services) {
+                writer.write(service);
+                writer.newLine();
+            }
+        }
+    }
+    public void testHandleServiceRemoval() throws IOException {
+        List<String> services = loadServices();
+        Scanner scanner = new Scanner(System.in);
+        handleServiceRemoval(services, scanner);
+    }
+    public List<String> forTestLoadServices() throws IOException {
+        List<String> services = loadServices();
+        return services;
+    }
+    public void testHandleService(List<String> services, Scanner scanner) throws IOException {
+        handleServiceRemoval(services, scanner);
+    }
 
 }
