@@ -1,14 +1,13 @@
 package AllData;
 import Client.Client;
 import Agronomist.Agronomist;
-import Human.Human;
 import Order.Order;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class AllData {
-    public void menu() throws IOException {
+    public String menu() throws IOException {
         System.out.println("---------------MENU--------------");
         System.out.println("1) Add plants"); //+
         System.out.println("2) Remove plants"); //+
@@ -44,8 +43,13 @@ public class AllData {
             Agronomist agronomist = new Agronomist(){};
             Order order = new Order();
 
+
             Scanner in = new Scanner(System.in);
             System.out.print("Please enter a list number: ");
+            if (!in.hasNextLine()) {
+                System.out.println("No input provided.");
+                break;
+            }
             String MenuListNumber = in.nextLine().toLowerCase();
 
             if (MenuListNumber.equals("1") | MenuListNumber.equals("one")) {
@@ -137,5 +141,6 @@ public class AllData {
                 continue;
             }
         }
+        return null;
     }
 }
